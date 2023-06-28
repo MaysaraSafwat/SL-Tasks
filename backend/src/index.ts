@@ -1,17 +1,25 @@
-import express, { Request, Response } from "express";
-import dotenv from 'dotenv';
-import {connectDB} from './util/db'
-import mongoose from "mongoose";
-dotenv.config();
+import express from "express";
+import cors from 'cors';
+ import helmet from "helmet";
+ import api from "./api"
+require('dotenv').config();
+
+
+
 
 const app = express();
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.get('/', (req, res) => {
+    res.send("In GET")
+  });
+app.use('/api/v1', api);
 
-// connect to a MongoDB database
-const MONGO_CONN_STR = process.env.MONGO_URL
 
+const PORT = process.env.PORT
 
-app.listen( async() => {
-    await connectDB(MONGO_CONN_STR)
-    console.log("http://localhost:" + process.env.PORT);
+app.listen(PORT,() => {
+    console.log("http://localhost:" + PORT);
   });
 
