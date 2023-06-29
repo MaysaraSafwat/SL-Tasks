@@ -3,12 +3,13 @@ import * as ProductsController from './Products.controller';
 import { Product , ProductWithId} from './Products.model';
 import validateRequest from '../../middlewares/validateRequestMiddleware'
 import {ParamsId }from "../../interfaces/ParamId"
+import {upload }from "../../middlewares/ImgUploadMiddleware"
 
 const ProductsRouter = Router();
 
 ProductsRouter.get('/', ProductsController.getAllProducts);
 
-ProductsRouter.post( '/', validateRequest({ body: Product,}), ProductsController.createProduct);
+ProductsRouter.post( '/' ,validateRequest({body: Product}), ProductsController.createProduct);
 
 ProductsRouter.get('/:id', validateRequest({params: ParamsId, }), ProductsController.getProduct );
 

@@ -16,6 +16,7 @@ export async function getAllProducts(req: Request, res: Response<ProductWithId[]
 
   export async function createProduct(req: Request<{}, ProductWithId, Product>, res: Response<ProductWithId>, next: NextFunction) {
     try {
+        console.log(req.body)
       const insertResult = await Products.insertOne(req.body);
       if (!insertResult.acknowledged) throw new Error('Error inserting Product.');
       res.status(201);
