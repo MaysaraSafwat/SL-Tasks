@@ -9,7 +9,7 @@ export default function DashboardRoutes (){
         <Routes>
 				<Route path="dashboard/products" element={<Products />} />
                 <Route path="/createProduct" element={<CreateProduct/>}/>
-                <Route path="/updateProduct" element={<UpdateProduct/>}/>
+                <Route path="/updateProduct/:id" element={<UpdateProduct/>}/>
 			
 		</Routes>
     )
