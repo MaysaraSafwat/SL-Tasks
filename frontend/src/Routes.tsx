@@ -6,11 +6,13 @@ import UpdateProduct from "./pages/UpdateProduct"
 
 export default function DashboardRoutes (){
     return (
+      <div className="text-center">
         <Routes>
 				<Route path="dashboard/products" element={<Products />} />
                 <Route path="/createProduct" element={<CreateProduct/>}/>
                 <Route path="/updateProduct/:id" element={<UpdateProduct/>}/>
 			
 		</Routes>
+     </div>
     )
 }

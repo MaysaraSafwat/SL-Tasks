@@ -21,7 +21,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="flex flex-col items-center justify-between min-h-screen py-2">
       <BrowserRouter>
       { 
         isLoggedIn ? (
