@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import { getPaginatedProducts } from "../services/ProductsApi";
+import { deleteProduct, getPaginatedProducts } from "../services/ProductsApi";
 import Datatable from "../components/Datatable";
+import { Modal } from "../components/Modal";
 
 const LIMIT = 10;
 
@@ -18,6 +19,8 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const columns = [
     { key: "id", title: "ID" },
@@ -30,9 +33,21 @@ export default function Products() {
     navigate(`/updateProduct/${id}`);
   };
 
-  const onDeleteClick = (id:number) => {
-    console.log("DELETE THIS ", id);
+  const onDeleteClick = async(id:number) => {
+    try{
+        let res = await deleteProduct(id)
+        console.log(res)
+        setModalMessage("Deletion successful!");
+    }catch(err){
+        console.log(err)
+        setModalMessage("Error in deletion.");
+    }finally{
+        setShowModal(true);
+    }
   };
+  const onModalClose = ()=>{
+    setShowModal(false)
+  }
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
@@ -115,6 +130,8 @@ export default function Products() {
               </li>
             </ul>
           </div>
+
+          {showModal && <Modal  modalMessage={modalMessage} handleClick={onModalClose}/>}
         </div>
       ) : (
         <Loader size={50} loading={isLoading} message="Fetching Products" />
