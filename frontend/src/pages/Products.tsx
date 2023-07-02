@@ -1,21 +1,36 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import { getAllProducts, getPaginatedProducts } from "../services/ProductsApi";
-import ProductTable from "../components/Datatable";
+import { getPaginatedProducts } from "../services/ProductsApi";
+import Datatable from "../components/Datatable";
 
 const LIMIT = 10;
+
+interface Product {
+    id: number;
+    title: string;
+    category: string;
+    price: number;
+  }
+
 export default function Products() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  const onEditClick = (id: number) => {
+  const columns = [
+    { key: "id", title: "ID" },
+    { key: "title", title: "Title" },
+    { key: "category", title: "Category" },
+    { key: "price", title: "Price" },
+  ];
+
+  const onEditClick = (id:number) => {
     navigate(`/updateProduct/${id}`);
   };
 
-  const onDeleteClick = (id: number) => {
+  const onDeleteClick = (id:number) => {
     console.log("DELETE THIS ", id);
   };
   function handlePageChange(newPage: number) {
@@ -50,8 +65,9 @@ export default function Products() {
 
       {!isLoading ? (
         <div>
-          <ProductTable
-            products={products}
+          <Datatable
+           columns={columns}
+            data={products}
             onEdit={onEditClick}
             onDelete={onDeleteClick}
           />
