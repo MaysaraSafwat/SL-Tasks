@@ -1,24 +1,10 @@
 import {useState} from "react"
 import {NavLink} from "react-router-dom";
-// import {
-//     Card,
-//     Typography,
-//     List,
-//     ListItem,
-//     ListItemPrefix,
-//     ListItemSuffix,
-//     Chip,
-//   } from "@material-tailwind/react";
-//   import {
-//     PresentationChartBarIcon,
-//     ShoppingBagIcon,
-//     UserCircleIcon,
-//     Cog6ToothIcon,
-//     InboxIcon,
-//     PowerIcon,
- // } from "@heroicons/react/24/solid";
-   
-  export default function Sidebar() {
+
+   type Props = {
+    logout: ()=>void
+   }
+  export default function Sidebar({logout}:Props) {
     const [showSidebar, setShowSidebar] = useState(true);
 
     return (
@@ -73,6 +59,16 @@ import {NavLink} from "react-router-dom";
 
           Users
         </NavLink>
+      </li>
+      <li className="px-4 py-2 hover:bg-gray-200  text-2xl" style={{marginTop: "20px"}} onClick={logout}>
+        <a className="text-white-700 hover:text-gray-900 flex gap-2 items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+        </svg>
+
+
+          Logout
+        </a>
       </li>
     </ul>
 

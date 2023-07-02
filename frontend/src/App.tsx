@@ -5,21 +5,33 @@ import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import DashboardRoutes from './Routes';
+import { userLogin } from './auth';
 
 function App() {
-  const [isAuth, setIsAuth]= useState(true);
+  const[isLoggedIn,setIsLoggedIn]=useState(false)
+
+  const login=(data:any)=>{
+   if(userLogin(data)){
+    setIsLoggedIn(true)
+   }
+  }
+
+  const logout =()=>{
+    setIsLoggedIn(false);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <BrowserRouter>
       { 
-        isAuth ? (
+        isLoggedIn ? (
           <>
-          <Sidebar/>
+          <Sidebar logout={logout}/>
           <DashboardRoutes/>
           </>
         ) : (
           <>
-          <Login/>
+          <Login loginHandler={login}/>
           </>
         )
       }
