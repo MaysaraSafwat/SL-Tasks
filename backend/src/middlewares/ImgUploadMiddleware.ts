@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";;
 
-
+//for testing create images folder inside uploads folder in backend root directory
 
  const storage = multer.diskStorage({
   destination: function (req, file, cb) {

@@ -4,18 +4,19 @@ import { Product , ProductWithId} from './Products.model';
 import validateRequest from '../../middlewares/validateRequestMiddleware'
 import {ParamsId }from "../../interfaces/ParamId"
 import {upload }from "../../middlewares/ImgUploadMiddleware"
+import { authMiddleware } from '../../middlewares/authMiddleware';
 
 const ProductsRouter = Router();
 
-ProductsRouter.get('/', ProductsController.getAllProducts);
+ProductsRouter.get('/',authMiddleware, ProductsController.getAllProducts);
 
-ProductsRouter.post( '/' ,validateRequest({body: Product}), ProductsController.createProduct);
+ProductsRouter.post( '/', authMiddleware,validateRequest({body: Product}), ProductsController.createProduct);
 
-ProductsRouter.get('/:id', validateRequest({params: ParamsId, }), ProductsController.getProduct );
+ProductsRouter.get('/:id',authMiddleware, validateRequest({params: ParamsId, }), ProductsController.getProduct );
 
-ProductsRouter.put('/:id', validateRequest({ params: ParamsId, body: Product,}), ProductsController.updateProduct,);
+ProductsRouter.put('/:id',authMiddleware, validateRequest({ params: ParamsId, body: Product,}), ProductsController.updateProduct,);
 
-ProductsRouter.delete('/:id',validateRequest({ params: ParamsId, }), ProductsController.deleteProduct);
+ProductsRouter.delete('/:id',authMiddleware,validateRequest({ params: ParamsId, }), ProductsController.deleteProduct);
 
 export default ProductsRouter;
 
