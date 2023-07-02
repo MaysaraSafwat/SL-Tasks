@@ -9,8 +9,12 @@ export function getAllProducts() {
     return axiosInstance.post(`/products/add`, product).then((response) => response.data);
   }
 
-  export function getPaginatedProducts (limit:number, skip:number) {
+  export function getPaginatedProducts (limit:number, skip:number, searchQuery:string) {
+    if(searchQuery){
+        return axiosInstance.get(`/products/search?q=${searchQuery}`).then((response)=> response.data)
+    } else {
     return axiosInstance.get(`/products?limit=${limit}&skip=${skip}`).then((response)=> response.data)
+    }
   }
 
   export function updateProduct(product: any, id:number){

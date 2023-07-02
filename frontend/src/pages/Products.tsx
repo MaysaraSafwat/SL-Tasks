@@ -18,6 +18,7 @@ export default function Products() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -60,7 +61,7 @@ export default function Products() {
     try {
       setIsLoading(true);
       const skip = (page - 1) * LIMIT;
-      let res = await getPaginatedProducts(LIMIT, skip);
+      let res = await getPaginatedProducts(LIMIT, skip, searchQuery);
       setProducts(res.products);
     } catch (err) {
       console.log(err);
@@ -69,20 +70,35 @@ export default function Products() {
 
   return (
     <div>
-      <div className="flex justify-end m-4">
+      <div className="flex justify-between  m-4">
+      <div className="m-4">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          className="px-4 py-2 border border-gray-400 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        />
+      </div>
+
         <NavLink
           to={`/createProduct`}
-          className="px-4 py-2 bg-blue-800 text-white rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="  m-4 px-4 py-2 bg-blue-800 text-white rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Add Product
         </NavLink>
+      
       </div>
 
       {!isLoading ? (
         <div>
           <Datatable
            columns={columns}
-            data={products}
+            data={products.filter(
+              (product: Product) =>
+                product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.category.toLowerCase().includes(searchQuery.toLowerCase())
+            )}
             onEdit={onEditClick}
             onDelete={onDeleteClick}
           />
