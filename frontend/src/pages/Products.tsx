@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import Loader from "../components/Loader";
 import { deleteProduct, getPaginatedProducts } from "../services/ProductsApi";
 import Datatable from "../components/Datatable";
@@ -17,11 +18,19 @@ interface Product {
 export default function Products() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
+  const { data, isLoading, isError } = useQuery(
+    ["products", page, searchQuery],
+    async () => {
+      const skip = (page - 1) * LIMIT;
+      const res = await getPaginatedProducts(LIMIT, skip, searchQuery);
+      return res.products;
+    }
+  );
 
   const columns = [
     { key: "id", title: "ID" },
@@ -52,21 +61,18 @@ export default function Products() {
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
-  useEffect(() => {
-    fetchProducts();
-    setIsLoading(false);
-  }, [page]);
 
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      const skip = (page - 1) * LIMIT;
-      let res = await getPaginatedProducts(LIMIT, skip, searchQuery);
-      setProducts(res.products);
-    } catch (err) {
-      console.log(err);
+
+  useEffect(()=>{
+    if (isError) {
+      console.log("Error fetching products");
+    } else if (data) {
+      setProducts(data);
     }
-  };
+  }, [data, isLoading, isError]);
+
+
+
 
   return (
     <div>
