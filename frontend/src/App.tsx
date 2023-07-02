@@ -3,7 +3,7 @@ import './App.css';
 import Loader from './components/Loader';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 import DashboardRoutes from './Routes';
 import { userLogin } from './auth';
 
@@ -28,6 +28,8 @@ function App() {
           <>
           <Sidebar logout={logout}/>
           <DashboardRoutes/>
+         
+          
           </>
         ) : (
           <>
